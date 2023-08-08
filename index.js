@@ -46,7 +46,7 @@ app.get('/api/hello', function(req, res) {
 app.get("/api/shorturl/:input",async (req, res) => {
   const input = parseInt(req.params.input);
   const shortcut=await Url.findOne({short:input})
-  if(!shortcut) return res.status(200).json({error: 'invalid url'})
+  if(!shortcut) return res.status(404).json({error: 'invalid url'})
   res.status(301).redirect(shortcut.original)
 })
 
@@ -55,7 +55,7 @@ app.post("/api/shorturl", async (req, res) => {
   try {
     const bodyUrl=req.body.url
     const urlRegEXP= new RegExp(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&\/\/=]*)/)
-    if(!bodyUrl.match(urlRegEXP)) return res.status(400).json({error: "Invalid URL"})
+    if(!bodyUrl.match(urlRegEXP)) return res.status(200).json({error: "Invalid URL"})
 
     const exist=await Url.findOne({original:bodyUrl})
     if(exist){
