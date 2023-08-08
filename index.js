@@ -46,7 +46,7 @@ app.get('/api/hello', function(req, res) {
 app.get("/api/shorturl/:input",async (req, res) => {
   const input = parseInt(req.params.input);
   const shortcut=await Url.findOne({short:input})
-  if(!shortcut) return res.json({error: 'invalid url'})
+  if(!shortcut) return res.status(200).json({error: 'invalid url'})
   res.status(301).redirect(shortcut.original)
 })
 
